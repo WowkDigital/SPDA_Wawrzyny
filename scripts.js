@@ -60,15 +60,26 @@ const lbNext = document.getElementById('lb-next');
 
 let galleryItems = [];
 let currentIndex = 0;
+let galleryFiles = []; // Będą ładowane dynamicznie z PHP
 
-// Lista plików w galerii
-const galleryFiles = [
-    { src: 'images/galeria_1.jpg', alt: 'Wydarzenie 1' },
-];
-
-function buildGallery() {
+async function buildGallery() {
     const galleryContainer = document.getElementById('dynamic-gallery');
     if (!galleryContainer) return;
+
+    try {
+        const response = await fetch('get_gallery.php');
+        if (!response.ok) throw new Error('Błąd ładowania listy zdjęć');
+        galleryFiles = await response.json();
+    } catch (err) {
+        console.error('Błąd galerii:', err);
+        galleryContainer.innerHTML = '<p class="text-gray-500 italic">Nie udało się załadować zdjęć.</p>';
+        return;
+    }
+
+    if (galleryFiles.length === 0) {
+        galleryContainer.innerHTML = '<p class="text-gray-500 italic">Galeria jest obecnie pusta.</p>';
+        return;
+    }
 
     galleryContainer.innerHTML = '';
 
@@ -80,7 +91,7 @@ function buildGallery() {
         item.setAttribute('tabindex', '0');
         item.setAttribute('aria-label', `Otwórz zdjęcie: ${file.alt}`);
 
-        item.innerHTML = `<img src="${file.src}" data-full="${file.src}" alt="${file.alt}">`;
+        item.innerHTML = `<img src="${file.src}" data-full="${file.src}" alt="${file.alt}" loading="lazy">`;
 
         item.addEventListener('click', () => openLightbox(i));
         item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openLightbox(i); });
@@ -92,15 +103,15 @@ function buildGallery() {
 }
 
 function openLightbox(index) {
-    if (!galleryItems.length) return;
+    if (!galleryFiles.length) return;
     currentIndex = index;
-    const img = galleryItems[index].querySelector('img');
+    const item = galleryFiles[index];
     if (lbImg) {
-        lbImg.src = img.dataset.full || img.src;
-        lbImg.alt = img.alt;
+        lbImg.src = item.src;
+        lbImg.alt = item.alt;
     }
-    if (lbCaption) lbCaption.textContent = img.alt;
-    if (lbCounter) lbCounter.textContent = (index + 1) + ' / ' + galleryItems.length;
+    if (lbCaption) lbCaption.textContent = item.alt;
+    if (lbCounter) lbCounter.textContent = (index + 1) + ' / ' + galleryFiles.length;
     if (lightbox) lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
     if (lbClose) lbClose.focus();
