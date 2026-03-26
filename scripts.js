@@ -64,6 +64,8 @@ let galleryFiles = []; // Będą ładowane dynamicznie z PHP
 
 async function buildGallery() {
     const galleryContainer = document.getElementById('dynamic-gallery');
+    const loadMoreContainer = document.getElementById('gallery-load-more-container');
+    const loadMoreBtn = document.getElementById('gallery-load-more');
     if (!galleryContainer) return;
 
     try {
@@ -78,6 +80,7 @@ async function buildGallery() {
 
     if (galleryFiles.length === 0) {
         galleryContainer.innerHTML = '<p class="text-gray-500 italic">Galeria jest obecnie pusta.</p>';
+        if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
         return;
     }
 
@@ -85,7 +88,9 @@ async function buildGallery() {
 
     galleryFiles.forEach((file, i) => {
         const item = document.createElement('div');
-        item.className = 'gallery-item bg-gray-200';
+        // Ukrywamy powyżej 10-ciu
+        const isHidden = i >= 10;
+        item.className = `gallery-item bg-gray-200 ${isHidden ? 'hidden' : ''}`;
         item.dataset.index = i;
         item.setAttribute('role', 'button');
         item.setAttribute('tabindex', '0');
@@ -98,6 +103,22 @@ async function buildGallery() {
 
         galleryContainer.appendChild(item);
     });
+
+    // Obsługa przycisku "Pokaż więcej"
+    if (loadMoreContainer) {
+        if (galleryFiles.length > 10) {
+            loadMoreContainer.classList.remove('hidden');
+            if (loadMoreBtn && !loadMoreBtn.dataset.init) {
+                loadMoreBtn.dataset.init = "true";
+                loadMoreBtn.addEventListener('click', () => {
+                    document.querySelectorAll('.gallery-item.hidden').forEach(el => el.classList.remove('hidden'));
+                    loadMoreContainer.classList.add('hidden');
+                });
+            }
+        } else {
+            loadMoreContainer.classList.add('hidden');
+        }
+    }
 
     galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
 }
