@@ -6,7 +6,7 @@ header('Content-Type: application/json');
  * Obsługiwane formaty: jpg, jpeg, png, gif, webp.
  */
 
-$directory = 'gallery';
+$directory = '../gallery';
 $images = [];
 
 if (is_dir($directory)) {
@@ -21,7 +21,7 @@ if (is_dir($directory)) {
             // Możemy ulepszyć 'alt' wycinając podkreślenia/myślniki z nazwy pliku
             $cleanName = str_replace(['_', '-'], ' ', pathinfo($file, PATHINFO_FILENAME));
             $images[] = [
-                'src' => $filePath,
+                'src' => 'gallery/' . $file,
                 'alt' => ucfirst($cleanName)
             ];
         }

@@ -19,27 +19,27 @@ function loadComponent(id, file, callback) {
 // Inicjalizacja wszystkich sekcji dynamicznych
 function initDynamicSections() {
     // Sekcja O nas (tylko na głównej)
-    loadComponent('o-nas', 'o_nas.html');
+    loadComponent('o-nas', 'components/o_nas.html');
 
     // Sekcja Wydarzenia 2025 (tylko na głównej)
-    loadComponent('wydarzenia', 'wydarzenia_2025.html', () => {
+    loadComponent('wydarzenia', 'components/wydarzenia_2025.html', () => {
         if (typeof buildGallery === 'function') buildGallery();
     });
 
     // Sekcja Film Orzech
-    loadComponent('film-orzech', 'film_sekcja.html');
+    loadComponent('film-orzech', 'components/film_sekcja.html');
 
     // Sekcja Dekalog Orzecha
-    loadComponent('dekalog-orzecha', 'dekalog_sekcja.html');
+    loadComponent('dekalog-orzecha', 'components/dekalog_sekcja.html');
 
     // Sekcja Kalendarium 2026 (na głównej i v2)
-    loadComponent('kalendarium', 'kalendarium_2026.html');
+    loadComponent('kalendarium', 'components/kalendarium_2026.html');
 
     // Sekcja Działalność
-    loadComponent('dzialalnosc', 'dzialalnosc.html');
+    loadComponent('dzialalnosc', 'components/dzialalnosc.html');
 
     // Sekcja 1.5% Podatku
-    loadComponent('podatek', 'podatek_sekcja.html');
+    loadComponent('podatek', 'components/podatek_sekcja.html');
 }
 
 // Inicjalizacja przy ładowaniu strony
@@ -47,6 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initDynamicSections();
     lucide.createIcons();
     if (typeof buildGallery === 'function') buildGallery();
+
+    // Śledzenie odwiedzin
+    fetch('api/track.php');
 });
 
 // ── Lightbox ─────────────────────────────────────────────
@@ -69,7 +72,7 @@ async function buildGallery() {
     if (!galleryContainer) return;
 
     try {
-        const response = await fetch('get_gallery.php');
+        const response = await fetch('api/get_gallery.php');
         if (!response.ok) throw new Error('Błąd ładowania listy zdjęć');
         galleryFiles = await response.json();
     } catch (err) {

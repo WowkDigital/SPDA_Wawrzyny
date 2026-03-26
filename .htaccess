@@ -24,6 +24,4 @@ HeaderName "<h1>Przeglądanie plików</h1>"
 ReadmeName footer.html
 
 # KROK 5 (Opcjonalny): Ukrywanie określonych plików na liście.
-# Ta linia ukryje sam plik .htaccess oraz plik z opisem (footer.html),
-# aby nie zaśmiecały listy. Możesz tu dodać inne pliki.
-IndexIgnore .htaccess footer.html
+IndexIgnore .htaccess footer.html stats.json admin/ api/ components/ css/ js/
