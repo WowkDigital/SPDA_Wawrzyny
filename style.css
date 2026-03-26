@@ -1,0 +1,199 @@
+/* Prevent horizontal overflow on all screen sizes */
+html,
+body {
+    overflow-x: hidden;
+}
+
+/* Custom Styles for enhancements */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.hero-pattern {
+    background-color: #367664;
+    background-image: linear-gradient(135deg, #265447 0%, #367664 100%);
+}
+
+.list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.07);
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(54, 118, 100, 0);
+    transition: background 0.3s ease;
+    border-radius: 0.75rem;
+}
+
+.gallery-item:hover::after {
+    background: rgba(54, 118, 100, 0.25);
+}
+
+/* Lightbox */
+#lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.92);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+#lightbox.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+#lightbox-img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+    transform: scale(0.85);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+#lightbox.active #lightbox-img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.lb-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.lb-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+#lb-prev {
+    left: 1.25rem;
+}
+
+#lb-next {
+    right: 1.25rem;
+}
+
+#lb-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+#lb-close:hover {
+    background: rgba(255, 80, 80, 0.5);
+}
+
+#lb-caption {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.875rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    backdrop-filter: blur(4px);
+}
+
+#lb-counter {
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 0 0 rgba(54, 118, 100, 0.4);
+        border-color: rgba(54, 118, 100, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 12px rgba(54, 118, 100, 0);
+        border-color: rgba(54, 118, 100, 0.7);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(54, 118, 100, 0);
+        border-color: rgba(54, 118, 100, 0.4);
+    }
+}
+
+.pulse-container {
+    border: 2px solid rgba(54, 118, 100, 0.3);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    animation: pulse-border 2s infinite;
+    background: rgba(54, 118, 100, 0.02);
+    margin-top: 2.5rem;
+}

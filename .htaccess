@@ -1,0 +1,29 @@
+#################################################################
+# Pełna konfiguracja .htaccess do listowania zawartości folderu #
+#################################################################
+
+# KROK 1: Włączenie modułu listowania.
+# To jest podstawowa dyrektywa, bez której nic nie zadziała.
+Options +Indexes
+
+# KROK 2: Ustawienie opcji wyglądu i zachowania listy.
+# FancyIndexing      - Włącza ładniejszy, graficzny widok (ikony, kolumny).
+# FoldersFirst       - Sortuje tak, aby foldery były zawsze na górze listy.
+# NameWidth=* - Zapobiega obcinaniu długich nazw plików.
+# Charset=UTF-8      - Kluczowe dla poprawnego wyświetlania polskich znaków (ą, ę, ś, ć, ź, ż, ł).
+# SuppressHTMLPreamble - Usuwa domyślny nagłówek i stopkę HTML, dając kontrolę (używane z HeaderName/ReadmeName).
+IndexOptions FancyIndexing FoldersFirst NameWidth=* Charset=UTF-8
+
+# KROK 3: Ustawienie własnego tytułu (nagłówka H1) na stronie.
+# Zostanie on wyświetlony na samej górze.
+HeaderName "<h1>Przeglądanie plików</h1>"
+
+# KROK 4 (Opcjonalny): Wyświetlanie opisu z pliku README.
+# Jeśli w tym samym folderze umieścisz plik "stopka.html", jego treść
+# zostanie wyświetlona pod listą plików. Możesz to usunąć, jeśli nie potrzebujesz.
+ReadmeName footer.html
+
+# KROK 5 (Opcjonalny): Ukrywanie określonych plików na liście.
+# Ta linia ukryje sam plik .htaccess oraz plik z opisem (footer.html),
+# aby nie zaśmiecały listy. Możesz tu dodać inne pliki.
+IndexIgnore .htaccess footer.html
